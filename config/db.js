@@ -17,6 +17,8 @@
 
 // export default sequelize;
 
+
+
 /////////////////////////////////////////
 // config/db.js
 import dotenv from "dotenv";
@@ -24,19 +26,20 @@ dotenv.config();
 
 import { Sequelize } from "sequelize";
 
-const isProduction = process.env.NODE_ENV === "production";
+// A more robust check: enable SSL if the URL is for a Render database
+const useSsl = process.env.DATABASE_URL.includes('onrender.com');
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "postgres",
   logging: false,
-  dialectOptions: isProduction
+  dialectOptions: useSsl 
     ? {
         ssl: {
           require: true,
           rejectUnauthorized: false,
         },
       }
-    : {}, // Use an empty object for local development
+    : {},
 });
 
 export default sequelize;
