@@ -1,299 +1,123 @@
-# LMS Backend
+# Learning Management System (LMS) - Backend
 
-A full-featured Learning Management System backend built with Node.js + PostgreSQL.
+This project is the backend for a basic Learning Management System (LMS) where users can sign up, view courses, enroll, and track their learning progress. It features a secure, role-based REST API built with Node.js and Express, using PostgreSQL for data persistence.
 
-## 🚀 Features
+## Features
 
-- ✅ JWT Authentication (Login / Signup)
-- ✅ Role-based access: **Admin** vs **User**
-- ✅ Admin-only: Create & manage **Courses**, **Lessons**, **Quizzes**, **Questions**
-- ✅ Users: View courses, enroll, complete lessons, take quizzes
-- ✅ Auto-grade quiz submissions
-- ✅ Lesson completion tracking with course progress %
-- ✅ Pagination support for all major list routes
-- ✅ Secure password hashing using **bcrypt**
-- ✅ Schema validation with **Joi**
-- ✅ Clean RESTful API design
+* **Authentication**: Secure user signup and login using JWT-based authentication.
+* **Role-Based Access Control**: Differentiates between regular users and admins, where admins can manage course content.
+* **Course Management**: Admins can create courses with a title, description, instructor, and price. Users can view and enroll in courses.
+* **Lessons & Quizzes**: Courses contain multiple lessons and quizzes. Lessons include a title, video URL, and optional resources.
+* **Progress Tracking**: Users can mark lessons as completed and view their overall course progress.
+* **Quiz System**: Users can attempt quizzes multiple times and view their scores for each attempt.
+* **API Security**: Implements API rate-limiting and input validation for enhanced security.
+* **Pagination**: Paginated responses for long lists of data, like courses and lessons.
 
----
+## Built With
 
-## 🛠️ Tech Stack
+This project is built with modern backend technologies:
 
-| Tech | Purpose |
-|------|---------|
-| Node.js + Express | Backend Server |
-| PostgreSQL | Relational Database |
-| Sequelize | ORM |
-| JWT | Authentication |
-| Joi | Validation |
-| dotenv | Config Management |
-| CORS, Helmet | Security |
-| express-rate-limit | Rate limiting |
-| pgAdmin / Render | Deployment & DB Hosting |
+* [Node.js](https://nodejs.org/)
+* [Express](https://expressjs.com/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Sequelize](https://sequelize.org/) (ORM)
+* [JSON Web Tokens (JWT)](https://jwt.io/)
+* [Joi](https://joi.dev/) (Validation)
 
+## Getting Started
 
-## Setup
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing.
 
-```bash
-git clone <repo-url>
-cd lms-backend
-npm install
-cp .env.example .env
-# Add DB credentials in .env
-npm run seed
-npm run dev
+### Prerequisites
 
-Author: Akshat Saxena
----
+* Node.js (v18.x or later)
+* npm
+* PostgreSQL
 
-## 🧑‍💻 Deployment (Render)
-  Push repo to GitHub
-  
-  Create PostgreSQL & Web Service on Render
-  
-  Add env vars from .env
-  
-  Deploy
+### Installation
 
-## 📬 LMS API Endpoints (with Roles + Examples)
+1.  **Clone the repository**
+    ```sh
+    git clone https://github.com/ritesh-gupta19/Backend-LMS.git
+    cd lms-backend
+    ```
 
-> Replace `{base}` with your live backend URL, e.g. `https://lms-backend.onrender.com`
+2.  **Install NPM packages**
+    ```sh
+    npm install
+    ```
 
----
+3.  **Setup PostgreSQL Database**
+    * Create a new PostgreSQL database on your local machine.
 
-### 🔐 Auth Routes – `{base}/api/auth`
+4.  **Configure Environment Variables**
+    * Create a `.env` file in the root directory and add the following variables. This file is ignored by Git and should not be committed.
 
-  #### ✅ `POST /signup` — *Public*
-  
-  Register a new user (either `user` or `admin` role)
-  
-  **Request:**
-  
-  ```json
-  {
-    "fullName": "Test User",
-    "email": "test@gmail.com",
-    "password": "test123",
-    "role": "user"
-  }
-  ```
-  
-  **Response:**
-  
-  ```json
-  { "token": "<JWT token>" }
-  ```
-  
-  ---
-  
-  #### ✅ `POST /login` — *Public*
-  
-  Login and receive JWT token
-  
-  **Request:**
-  
-  ```json
-  {
-    "email": "test@gmail.com",
-    "password": "test123"
-  }
-  ```
-  
-  **Response:**
-  
-  ```json
-  { "token": "<JWT token>" }
-  ```
-  
-  ---
-  
-  ### 🎓 Course Routes – `{base}/api/courses`
-  
-  #### ✅ `POST /` — *Admin only*
-  
-  Create a new course
-  
-  **Request:**
-  
-  ```json
-  {
-    "title": "JavaScript Essentials",
-    "description": "Learn JS basics",
-    "instructor": "Admin User",
-    "price": 0
-  }
-  ```
-  
-  ---
-  
-  #### ✅ `GET /?page=1&limit=5` — *User & Admin*
-  
-  Fetch paginated list of all courses
-  
-  **Response:**
-  
-  ```json
-  {
-    "data": [ { "id": "...", "title": "..." } ],
-    "meta": { "total": 20, "page": 1, "limit": 5, "totalPages": 4 }
-  }
-  ```
-  
-  ---
-  
-  #### ✅ `POST /:courseId/enroll` — *User only*
-  
-  Enroll a user into a course
-  
-  **Response:**
-  
-  ```json
-  { "message": "Enrolled successfully" }
-  ```
-  
-  ---
-  
-  ### 📘 Lesson Routes – `{base}/api/courses/:courseId/lessons`
-  
-  #### ✅ `POST /` — *Admin only*
-  
-  Add a new lesson to a course
-  
-  **Request:**
-  
-  ```json
-  {
-    "title": "JS Variables",
-    "videoUrl": "https://...",
-    "resourceLink": "https://..."
-  }
-  ```
-  
-  ---
-  
-  #### ✅ `GET /?page=1&limit=5` — *User & Admin*
-  
-  Get lessons of a course
-  
-  ---
-  
-  ### 🧠 Lesson Progress – `{base}/api/lesson-progress`
-  
-  #### ✅ `POST /:lessonId/complete` — *User only*
-  
-  Mark a lesson as completed
-  
-  **Response:**
-  
-  ```json
-  { "message": "Lesson marked as complete" }
-  ```
-  
-  ---
-  
-  #### ✅ `GET /course/:courseId` — *User only*
-  
-  Get progress in a course (in %)
-  
-  **Response:**
-  
-  ```json
-  {
-    "courseId": "abc123",
-    "completed": 3,
-    "total": 6,
-    "progress": "50%"
-  }
-  ```
-  
-  ---
-  
-  ### 📝 Quiz Routes – `{base}/api/quizzes`
-  
-  #### ✅ `POST /` — *Admin only*
-  
-  Create a quiz linked to a course
-  
-  **Request:**
-  
-  ```json
-  {
-    "title": "JS Quiz",
-    "courseId": "abc123"
-  }
-  ```
-  
-  ---
-  
-  #### ✅ `GET /course/:courseId` — *User & Admin*
-  
-  Fetch all quizzes for a course (paginated)
-  
-  ---
-  
-  ### ❓ Question Routes – `{base}/api/questions`
-  
-  #### ✅ `POST /` — *Admin only*
-  
-  Add a question to a quiz
-  
-  **Request:**
-  
-  ```json
-  {
-    "quizId": "quiz123",
-    "questionText": "What is === in JS?",
-    "options": ["=", "==", "===", "!="],
-    "correctAnswer": "==="
-  }
-  ```
-  
-  ---
-  
-  ### 📥 Quiz Submissions – `{base}/api/quiz-submissions`
-  
-  #### ✅ `POST /:quizId/submit` — *User only*
-  
-  Submit quiz answers (auto-graded)
-  
-  **Request:**
-  
-  ```json
-  {
-    "answers": {
-      "questionId1": "Option A",
-      "questionId2": "Option B"
-    }
-  }
-  ```
-  
-  **Response:**
-  
-  ```json
-  {
-    "score": 2,
-    "totalQuestions": 3
-  }
-  ```
-  
-  ---
-  
-  #### ✅ `GET /quiz/:quizId` — *Admin only*
-  
-  View all quiz submissions for a quiz
-  
-  #### ✅ `GET /quiz/:quizId/user` — *User only*
-  
-  View your personal score on a quiz
+    ```env
+    # Environment
+    NODE_ENV=development
 
-## ✅ Final Status: DONE! 🎉
+    # Server Port
+    PORT=5000
 
-backend is now:
-- 🎯 Feature-complete
-- 🔐 Secure
-- 🚀 Ready for deployment
-- 👨‍💻 Easy to maintain
+    # Database Connection
+    DATABASE_URL="postgres://YOUR_DB_USER:YOUR_DB_PASSWORD@localhost:5432/YOUR_DB_NAME"
 
----
+    # JWT Secret
+    JWT_SECRET="YOUR_SUPER_SECRET_AND_COMPLEX_KEY"
+    ```
 
+5.  **Seed the Database**
+    * Run the seed script to populate the database with an admin user and initial course content.
+    ```sh
+    npm run seed
+    ```
 
+6.  **Run the Development Server**
+    * Start the server with Nodemon, which will automatically restart on file changes.
+    ```sh
+    npm run dev
+    ```
+    The server will be running at `http://localhost:5000`.
+
+## API Endpoints
+
+Here are the primary API endpoints available.
+
+### Authentication
+
+| Method | Endpoint           | Description                         |
+| :----- | :----------------- | :---------------------------------- |
+| `POST` | `/api/auth/signup` | Register a new user.                |
+| `POST` | `/api/auth/login`  | Log in a user and receive a token. |
+
+### Courses
+
+| Method | Endpoint                    | Auth  | Description                              |
+| :----- | :-------------------------- | :---- | :--------------------------------------- |
+| `GET`  | `/api/courses`              | None  | Get a paginated list of all courses.     |
+| `GET`  | `/api/courses/:id`          | None  | Get details for a single course.         |
+| `POST` | `/api/courses`              | Admin | Create a new course.                     |
+| `POST` | `/api/courses/:id/enroll`   | User  | Enroll the logged-in user in a course.   |
+
+### Lessons & Progress
+
+| Method | Endpoint                                  | Auth  | Description                              |
+| :----- | :---------------------------------------- | :---- | :--------------------------------------- |
+| `GET`  | `/api/courses/:courseId/lessons`          | User  | Get all lessons for a specific course.   |
+| `POST` | `/api/courses/:courseId/lessons`          | Admin | Create a new lesson for a course.        |
+| `POST` | `/api/lesson-progress/:lessonId/complete` | User  | Mark a lesson as complete.               |
+| `GET`  | `/api/lesson-progress/course/:courseId`   | User  | Get the user's progress for a course.    |
+
+### Quizzes & Attempts
+
+| Method | Endpoint             | Auth  | Description                               |
+| :----- | :------------------- | :---- | :---------------------------------------- |
+| `POST` | `/api/quizzes`       | Admin | Create a new quiz for a course.           |
+| `GET`  | `/api/quizzes/:quizId` | User  | Get a quiz with its questions.            |
+| `POST` | `/api/quiz-attempts` | User  | Submit answers for a quiz.                |
+| `GET`  | `/api/quiz-attempts` | User  | Get the logged-in user's quiz attempts. |
+
+## Deployment
+
+This application is ready for deployment. It has been configured to work with hosting providers like **Render** or **Heroku**. Ensure you set the `NODE_ENV`, `DATABASE_URL`, and `JWT_SECRET` environment variables in your production environment.
