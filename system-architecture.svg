@@ -1,0 +1,48 @@
+<svg width='800' height='600' xmlns='http://www.w3.org/2000/svg'>
+    <style>
+        .layer { fill: #cceeff; stroke: #007acc; stroke-width: 2; }
+        .arrow { fill: none; stroke: #007acc; stroke-width: 2; marker-end: url(#arrowhead); }
+        .label { font-size: 14px; font-family: Arial, sans-serif; }
+    </style>
+    <defs>
+        <marker id='arrowhead' markerWidth='10' markerHeight='7' refX='0' refY='3.5' orient='auto'>
+            <polygon points='0 0, 10 3.5, 0 7' fill='#007acc' />
+        </marker>
+    </defs>
+    <rect x='50' y='50' width='200' height='100' class='layer'/>
+    <text x='150' y='100' class='label' text-anchor='middle'>Client Layer</text>
+    
+    <rect x='300' y='50' width='200' height='100' class='layer'/>
+    <text x='400' y='100' class='label' text-anchor='middle'>Server Layer</text>
+    
+    <rect x='50' y='170' width='200' height='100' class='layer'/>
+    <text x='150' y='220' class='label' text-anchor='middle'>Middleware</text>
+    
+    <rect x='300' y='170' width='200' height='100' class='layer'/>
+    <text x='400' y='220' class='label' text-anchor='middle'>Routing</text>
+
+    <rect x='550' y='170' width='200' height='100' class='layer'/>
+    <text x='650' y='220' class='label' text-anchor='middle'>Validators</text>
+
+    <rect x='50' y='290' width='200' height='100' class='layer'/>
+    <text x='150' y='340' class='label' text-anchor='middle'>Controllers</text>
+    
+    <rect x='300' y='290' width='200' height='100' class='layer'/>
+    <text x='400' y='340' class='label' text-anchor='middle'>Models</text>
+    
+    <rect x='550' y='290' width='200' height='100' class='layer'/>
+    <text x='650' y='340' class='label' text-anchor='middle'>Config</text>
+    
+    <rect x='50' y='410' width='200' height='100' class='layer'/>
+    <text x='150' y='460' class='label' text-anchor='middle'>Database</text>
+    
+    <rect x='300' y='410' width='200' height='100' class='layer'/>
+    <text x='400' y='460' class='label' text-anchor='middle'>Data Initialization</text>
+    
+    <line x1='150' y1='150' x2='400' y2='150' class='arrow'/>
+    <line x1='150' y1='270' x2='400' y2='270' class='arrow'/>
+    <line x1='400' y1='150' x2='650' y2='220' class='arrow'/>
+    <line x1='400' y1='270' x2='650' y2='270' class='arrow'/>
+    <line x1='150' y1='390' x2='400' y2='390' class='arrow'/>
+    <line x1='400' y1='390' x2='650' y2='390' class='arrow'/> 
+</svg>
